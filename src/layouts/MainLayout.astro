@@ -1,0 +1,122 @@
+---
+import '../styles/global.css';
+---
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clina 的个人网站</title>
+    <meta name="description" content="使用 Astro v6 和 Tailwind v4 构建的个人网站">
+    <style is:global>
+      body {
+        position: relative;
+      }
+      .bing-bg::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: var(--bing-bg-image);
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        filter: brightness(0.7) contrast(1.2);
+        z-index: -2;
+      }
+      .bing-bg::after {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(#ffffff00 100%);
+        z-index: -1;
+      }
+    </style>
+  </head>
+  <body class="gradient-bg text-white">
+    <div class="min-h-screen">
+      <slot />
+    </div>
+    <script>
+      // 禁用 Astro Dev Toolbar
+      window.addEventListener('message', (event) => {
+        if (event.data.type === 'astro-dev-toolbar') {
+          window.parent.postMessage({ type: 'astro-dev-toolbar', enabled: false }, '*');
+        }
+      });
+
+      // 移除 Astro toolbar
+      if (window.parent !== window) {
+        window.parent.postMessage({ type: 'astro-toolbar', show: false }, '*');
+      }
+
+      // 获取Bing壁纸 - 使用直接支持CORS的API
+      async function loadBingWallpaper() {
+        try {
+          // 方法1: 使用bing.biturl.top API (直接返回JSON)
+          const api1 = 'https://bing.biturl.top/';
+
+          // 方法2: 使用每日必应美图API
+          const api2 = 'https://api.bingimg.cn/bing';
+
+          let imageUrl = null;
+
+          // 尝试API 1
+          try {
+            const response = await fetch(api1);
+            if (response.ok) {
+              const data = await response.json();
+              if (data && data.url) {
+                imageUrl = data.url;
+                console.log('Bing壁纸API1成功:', imageUrl);
+              }
+            }
+          } catch (e) {
+            console.warn('Bing壁纸API1失败:', e.message);
+          }
+
+          // 如果API1失败，尝试API2
+          if (!imageUrl) {
+            try {
+              const response = await fetch(api2);
+              if (response.ok) {
+                const data = await response.json();
+                if (data && data.images && data.images.length > 0) {
+                  imageUrl = data.images[0].url;
+                  console.log('Bing壁纸API2成功:', imageUrl);
+                }
+              }
+            } catch (e) {
+              console.warn('Bing壁纸API2失败:', e.message);
+            }
+          }
+
+          // 如果所有API都失败，使用静态图片作为回退
+          if (!imageUrl) {
+            console.log('所有Bing API失败，使用静态回退图片');
+            // 这里你可以添加一个静态图片URL
+            // imageUrl = 'https://example.com/static-wallpaper.jpg';
+          }
+
+          if (imageUrl) {
+            document.documentElement.style.setProperty('--bing-bg-image', `url('${imageUrl}')`);
+            document.body.classList.add('bing-bg');
+            console.log('Bing壁纸加载成功:', imageUrl);
+          } else {
+            console.log('无法获取Bing壁纸，使用默认靛蓝色渐变背景');
+          }
+        } catch (error) {
+          console.log('Bing壁纸加载失败，使用默认背景:', error.message);
+        }
+      }
+
+      loadBingWallpaper();
+    </script>
+  </body>
+</html>

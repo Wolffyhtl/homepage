@@ -1,0 +1,73 @@
+---
+const navLinks = [
+  { href: '#home', label: '首页' },
+  { href: '#about', label: '关于我' },
+  { href: '#skills', label: '技能' },
+  { href: '#projects', label: '项目' },
+  { href: '#contact', label: '联系' },
+];
+
+const updateTime = () => {
+  const now = new Date();
+  const utc8Time = new Date(now.getTime() + (8 * 60 * 60 * 1000));
+  const timeString = utc8Time.toLocaleString('zh-CN', {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: false
+  }).replace(/\//g, '-');
+  return timeString;
+};
+---
+
+<header class="sticky top-0 z-50 glass-light">
+  <nav class="container mx-auto px-6 py-4">
+    <div class="flex items-center justify-between">
+      <a href="#home" class="text-2xl font-bold text-gradient hover-lift">个人网站</a>
+
+      <div class="hidden md:flex space-x-8 items-center">
+        {navLinks.map(link => (
+          <a
+            href={link.href}
+            class="text-indigo-200 hover:text-indigo-300 transition-colors duration-300 hover-lift py-2"
+          >
+            {link.label}
+          </a>
+        ))}
+        <div class="text-white text-sm font-medium whitespace-nowrap">
+          <span id="currentTime"></span>
+        </div>
+      </div>
+
+      <button class="md:hidden glass p-2" aria-label="打开菜单">
+        <svg class="w-6 h-6 text-indigo-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+      </button>
+    </div>
+  </nav>
+
+  <script>
+    // 更新时间显示 - 调用系统本地时间
+    function updateTimeDisplay() {
+      const now = new Date();
+
+      const hours = String(now.getHours()).padStart(2, '0');
+      const minutes = String(now.getMinutes()).padStart(2, '0');
+      const seconds = String(now.getSeconds()).padStart(2, '0');
+
+      const timeString = `${hours}:${minutes}:${seconds}`;
+      const timeElement = document.getElementById('currentTime');
+      if (timeElement) {
+        timeElement.textContent = timeString;
+      }
+    }
+
+    // 初始化并每秒更新
+    updateTimeDisplay();
+    setInterval(updateTimeDisplay, 1000);
+  </script>
+</header>

@@ -1,0 +1,31 @@
+---
+const skills = [
+  { name: 'HTML/CSS', level: 90, icon: '🎨' },
+  { name: 'JavaScript', level: 85, icon: '⚡' },
+  { name: 'React', level: 80, icon: '⚛️' },
+  { name: 'Astro', level: 95, icon: '🚀' },
+  { name: 'Tailwind CSS', level: 88, icon: '🌸' },
+  { name: 'Node.js', level: 75, icon: '🟢' },
+];
+---
+
+<section id="skills" class="container mx-auto px-6 py-16">
+  <div class="glass p-8 hover-lift">
+    <h2 class="text-3xl font-bold text-gradient mb-8 text-center">技能专长</h2>
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {skills.map(skill => (
+        <div class="glass-light p-6 hover-lift text-center" data-key={skill.name}>
+          <div class="text-4xl mb-3">{skill.icon}</div>
+          <h3 class="text-lg font-semibold text-white mb-2">{skill.name}</h3>
+          <div class="w-full bg-indigo-900 rounded-full h-2 mb-2">
+            <div
+              class="bg-gradient-to-r from-indigo-400 to-indigo-600 h-2 rounded-full transition-all duration-1000"
+              style={`width: ${skill.level}%`}
+            />
+          </div>
+          <span class="text-sm text-white">{skill.level}%</span>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

@@ -1,0 +1,9 @@
+[
+    {
+    "title": "个人博客",
+    "description": "分享技术心得和生活感悟",
+    "url": "https://blog.example.com",
+    "icon": "📝",
+    "color": "from-blue-500 to-blue-600"
+    }
+]

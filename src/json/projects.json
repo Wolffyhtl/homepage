@@ -1,0 +1,14 @@
+[
+  {
+    "title": "Fuwari 博客",
+    "description": "使用 Astro 和 Tailwind CSS 构建的现代个人博客，具备优秀的性能和 SEO 优化。",
+    "tags": ["Astro", "Tailwind", "博客"],
+    "link": "#"
+  },
+  {
+    "title": "个人网站",
+    "description": "你现在访问的网站！使用 Astro v6 和 Tailwind v4 构建，毛玻璃效果设计。",
+    "tags": ["Astro", "Tailwind", "毛玻璃"],
+    "link": "#"
+  }
+]

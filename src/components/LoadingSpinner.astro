@@ -1,0 +1,99 @@
+---
+---
+
+<div class="fixed inset-0 bg-gradient-to-br from-gray-100 to-gray-300 flex items-center justify-center z-50" id="loadingSpinner">
+  <div class="text-center">
+    <!-- Windows 10风格加载圆圈 -->
+    <div class="w-16 h-16 rounded-full border-4 border-gray-400 border-t-gray-800 animate-spin mx-auto"></div>
+
+    <!-- 加载文字 -->
+    <div class="mt-6 text-center">
+      <p class="text-gray-800 text-sm animate-pulse">正在加载资源...</p>
+      <p class="text-gray-700 text-xs mt-1">Personal Website</p>
+    </div>
+
+    <!-- 进度条 -->
+    <div class="w-32 mx-auto mt-4 bg-indigo-900 rounded-full h-1">
+      <div class="bg-indigo-400 h-1 rounded-full animate-pulse" style="width: 0%"></div>
+    </div>
+  </div>
+</div>
+
+<style is:global>
+  @keyframes win10Spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  .animate-win10Spin {
+    animation: win10Spin 1.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  }
+
+  @keyframes fadeOut {
+    from {
+      opacity: 1;
+      visibility: visible;
+    }
+    to {
+      opacity: 0;
+      visibility: hidden;
+    }
+  }
+
+  .fade-out {
+    animation: fadeOut 0.5s ease-out forwards;
+    animation-delay: 1.5s;
+  }
+</style>
+
+<script>
+  // 模拟加载进度
+  let progress = 0;
+  const progressBar = document.querySelector('#loadingSpinner .bg-indigo-400') as HTMLElement | null;
+  const loadingText = document.querySelector('#loadingSpinner p:first-child') as HTMLElement | null;
+
+  // 更新进度条
+  const updateProgress = () => {
+    progress += Math.random() * 30;
+    if (progress > 100) progress = 100;
+
+    if (progressBar) {
+      progressBar.style.width = progress + '%';
+    }
+
+    // 根据进度更新文字
+    if (loadingText) {
+      if (progress < 30) {
+        loadingText.textContent = '正在初始化...';
+      } else if (progress < 60) {
+        loadingText.textContent = '正在加载资源...';
+      } else if (progress < 90) {
+        loadingText.textContent = '即将完成...';
+      } else {
+        loadingText.textContent = '加载完成！';
+      }
+    }
+
+    if (progress < 100) {
+      setTimeout(updateProgress, 200);
+    } else {
+      // 加载完成后隐藏
+      setTimeout(() => {
+        const spinner = document.getElementById('loadingSpinner') as HTMLElement | null;
+        if (spinner) {
+          spinner.classList.add('fade-out');
+          setTimeout(() => {
+            if (spinner) spinner.style.display = 'none';
+          }, 500);
+        }
+      }, 500);
+    }
+  };
+
+  // 开始加载
+  updateProgress();
+</script>

@@ -1,0 +1,77 @@
+@import 'tailwindcss';
+
+@theme {
+  --color-indigo-50: #ffffff00;
+  --color-indigo-100: #ffffff1f;
+  --color-indigo-200: #ffffff2f;
+  --color-indigo-300: #ffffff3f;
+  --color-indigo-400: #ffffff4f;
+  --color-indigo-500: #ffffff5f;
+  --color-indigo-600: #ffffff6f;
+  --color-indigo-700: #ffffff7f;
+  --color-indigo-800: #ffffff8f;
+  --color-indigo-900: #ffffff9f;
+  --color-indigo-950: #ffffffd2;
+
+  /* 毛玻璃效果变量 */
+  --glass-bg: rgba(255, 255, 255, 0.1);
+  --glass-border: rgba(255, 255, 255, 0.2);
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+/* 毛玻璃效果工具类 */
+.glass {
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+  border-radius: 16px;
+}
+
+.glass-light {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+}
+
+/* 渐变背景 */
+.gradient-bg {
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 25%, #cbd5e1 50%, #94a3b8 75%, #64748b 100%);
+  min-height: 100vh;
+}
+
+/* 动画效果 */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.6s ease-out forwards;
+}
+
+/* 悬停效果 */
+.hover-lift {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hover-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+}
+
+/* 文字渐变 */
+.text-gradient {
+  background: linear-gradient(135deg, #ffffff00 0%, #ffffff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}

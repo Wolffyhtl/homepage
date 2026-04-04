@@ -1,0 +1,27 @@
+---
+import projects from '../json/projects.json';
+---
+
+<section id="projects" class="container mx-auto px-6 py-16">
+  <div class="glass p-8 hover-lift">
+    <h2 class="text-3xl font-bold text-gradient mb-8 text-center">项目展示</h2>
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {projects.map((project, index) => (
+        <div class="glass-light p-6 hover-lift" data-key={index}>
+          <h3 class="text-xl font-semibold text-white mb-3">{project.title}</h3>
+          <p class="text-white mb-4 leading-relaxed">{project.description}</p>
+          <div class="flex flex-wrap gap-2 mb-4">
+            {project.tags.map(tag => (
+              <span class="px-3 py-1 bg-indigo-800 text-white rounded-full text-sm">
+                {tag}
+              </span>
+            ))}
+          </div>
+          <a href={project.link} class="text-white hover:text-gray-200 transition-colors duration-300">
+            查看详情 →
+          </a>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
