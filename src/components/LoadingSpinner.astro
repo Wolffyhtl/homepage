@@ -99,7 +99,7 @@
       } else if (progress < 60) {
         loadingText.textContent = '正在加载资源...';
       } else if (progress < 90) {
-        loadingText.textContent = '即将完成...';
+        loadingText.textContent = '正在加载壁纸...';
       } else {
         loadingText.textContent = '加载完成！';
       }
@@ -129,6 +129,9 @@
           footer.style.opacity = '1';
         }
 
+        // 加载完成后立即加载Bing壁纸
+        loadBingWallpaper();
+
         // 隐藏加载界面
         if (spinner) {
           spinner.classList.add('fade-out');
@@ -140,6 +143,59 @@
       }, 500);
     }
   };
+
+  // 获取Bing壁纸 - 使用直接支持CORS的API
+  async function loadBingWallpaper() {
+    try {
+      // 方法1: 使用bing.biturl.top API (直接返回JSON)
+      const api1 = 'https://bing.biturl.top/';
+
+      // 方法2: 使用每日必应美图API
+      const api2 = 'https://api.bingimg.cn/bing';
+
+      let imageUrl = null;
+
+      // 尝试API 1
+      try {
+        const response = await fetch(api1);
+        if (response.ok) {
+          const data = await response.json();
+          if (data && data.url) {
+            imageUrl = data.url;
+            console.log('Bing壁纸API1成功:', imageUrl);
+          }
+        }
+      } catch (e) {
+        console.warn('Bing壁纸API1失败:', e.message);
+      }
+
+      // 如果API1失败，尝试API2
+      if (!imageUrl) {
+        try {
+          const response = await fetch(api2);
+          if (response.ok) {
+            const data = await response.json();
+            if (data && data.images && data.images.length > 0) {
+              imageUrl = data.images[0].url;
+              console.log('Bing壁纸API2成功:', imageUrl);
+            }
+          }
+        } catch (e) {
+          console.warn('Bing壁纸API2失败:', e.message);
+        }
+      }
+
+      if (imageUrl) {
+        document.documentElement.style.setProperty('--bing-bg-image', `url('${imageUrl}')`);
+        document.body.classList.add('bing-bg');
+        console.log('Bing壁纸加载成功:', imageUrl);
+      } else {
+        console.log('无法获取Bing壁纸，使用默认靛蓝色渐变背景');
+      }
+    } catch (error) {
+      console.log('Bing壁纸加载失败，使用默认背景:', error.message);
+    }
+  }
 
   // 开始加载
   updateProgress();
