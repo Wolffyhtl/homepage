@@ -8,13 +8,13 @@
 
     <!-- 加载文字 -->
     <div class="mt-6 text-center">
-      <p class="text-gray-800 text-sm animate-pulse">正在加载资源...</p>
-      <p class="text-gray-700 text-xs mt-1">Personal Website</p>
+      <p class="text-[#ffffff] text-sm animate-pulse">正在加载资源...</p>
+      <p class="text-[#ffffff] text-xs mt-1">Personal Website</p>
     </div>
 
     <!-- 进度条 -->
-    <div class="w-32 mx-auto mt-4 bg-indigo-900 rounded-full h-1">
-      <div class="bg-indigo-400 h-1 rounded-full animate-pulse" style="width: 0%"></div>
+    <div class="w-32 mx-auto mt-4 bg-gray-400 rounded-full h-1">
+      <div class="bg-gray-800 h-1 rounded-full animate-pulse" style="width: 0%"></div>
     </div>
   </div>
 </div>
@@ -37,18 +37,113 @@
     from {
       opacity: 1;
       visibility: visible;
+      backdrop-filter: blur(0px);
     }
     to {
       opacity: 0;
       visibility: hidden;
+      backdrop-filter: blur(10px);
     }
   }
 
   .fade-out {
-    animation: fadeOut 0.5s ease-out forwards;
+    animation: fadeOut 1s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
     animation-delay: 1.5s;
   }
+
+  @keyframes slideUp {
+    from {
+      transform: translateY(0);
+    }
+    to {
+      transform: translateY(-100vh);
+    }
+  }
+
+  .slide-up {
+    animation: slideUp 1s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+    animation-delay: 1.8s;
+  }
 </style>
+
+<script>
+  // 隐藏header和其他内容
+  document.addEventListener('DOMContentLoaded', () => {
+    const header = document.querySelector('header');
+    const main = document.querySelector('main');
+    const footer = document.querySelector('footer');
+
+    if (header) header.style.opacity = '0';
+    if (main) main.style.opacity = '0';
+    if (footer) footer.style.opacity = '0';
+  });
+
+  // 模拟加载进度
+  let progress = 0;
+  const progressBar = document.querySelector('#loadingSpinner .bg-gray-800') as HTMLElement | null;
+  const loadingText = document.querySelector('#loadingSpinner p:first-child') as HTMLElement | null;
+
+  // 更新进度条
+  const updateProgress = () => {
+    progress += Math.random() * 30;
+    if (progress > 100) progress = 100;
+
+    if (progressBar) {
+      progressBar.style.width = progress + '%';
+    }
+
+    // 根据进度更新文字
+    if (loadingText) {
+      if (progress < 30) {
+        loadingText.textContent = '正在初始化...';
+      } else if (progress < 60) {
+        loadingText.textContent = '正在加载资源...';
+      } else if (progress < 90) {
+        loadingText.textContent = '即将完成...';
+      } else {
+        loadingText.textContent = '加载完成！';
+      }
+    }
+
+    if (progress < 100) {
+      setTimeout(updateProgress, 200);
+    } else {
+      // 加载完成后显示内容
+      setTimeout(() => {
+        const spinner = document.getElementById('loadingSpinner') as HTMLElement | null;
+        const header = document.querySelector('header');
+        const main = document.querySelector('main');
+        const footer = document.querySelector('footer');
+
+        // 显示内容并添加过渡动画
+        if (header) {
+          header.style.transition = 'opacity 1.5s ease-in-out';
+          header.style.opacity = '1';
+        }
+        if (main) {
+          main.style.transition = 'opacity 1.5s ease-in-out';
+          main.style.opacity = '1';
+        }
+        if (footer) {
+          footer.style.transition = 'opacity 1.5s ease-in-out';
+          footer.style.opacity = '1';
+        }
+
+        // 隐藏加载界面
+        if (spinner) {
+          spinner.classList.add('fade-out');
+          spinner.classList.add('slide-up');
+          setTimeout(() => {
+            if (spinner) spinner.style.display = 'none';
+          }, 2500);
+        }
+      }, 500);
+    }
+  };
+
+  // 开始加载
+  updateProgress();
+</script>
 
 <script>
   // 模拟加载进度
