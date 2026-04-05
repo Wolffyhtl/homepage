@@ -5,5 +5,19 @@
     "url": "https://blog.clina.top",
     "icon": "📝",
     "color": "from-blue-500 to-blue-600"
+    },
+    {
+    "title": "EdgeOne 图床",
+    "description": "存放用到的一些图片",
+    "url": "https://image.clina.top",
+    "icon": "🖼️",
+    "color": "from-blue-500 to-blue-600"
+    },
+    {
+    "title": "Umami 统计",
+    "description": "统计网站浏览量信息",
+    "url": "https://umami.clina.top",
+    "icon": "📊",
+    "color": "from-blue-500 to-blue-600"
     }
 ]
